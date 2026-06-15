@@ -55,6 +55,11 @@ const DOM = {
     btnAbrirModalAula: document.getElementById("btn-abrir-modal-aula"),
     btnVolverAulas: document.getElementById("btn-volver-aulas"),
     btnGuardarAsistencia: document.getElementById("btn-guardar-asistencia"),
+
+    btnGenerarPdf:document.getElementById("btn-generar-pdf"),
+    printClassName:document.getElementById("print-class-name"),
+    printSubjectName:document.getElementById("print-subject-name"),
+    printDate:document.getElementById("print-date"),
     
     // Modales
     modalAula: document.getElementById("modal-aula"),
@@ -275,6 +280,10 @@ function iniciarPaseLista(aula) {
     if (DOM.txtAsistenciaAula) DOM.txtAsistenciaAula.textContent = aula.nombre;
     if (DOM.txtAsistenciaMateria) DOM.txtAsistenciaMateria.textContent = aula.materia;
     
+    if(DOM.printClassName){DOM.printClassName.textContent =aula.nombre;}
+    if(DOM.printSubjectName){DOM.printSubjectName.textContent =aula.materia;}
+    if(DOM.printDate){DOM.printDate.textContent =new Date().toLocaleDateString("es-NI");}
+
     renderizarEstudiantesAsistencia();
     cambiarSubSeccion("paseLista");
 }
@@ -305,10 +314,12 @@ function renderizarEstudiantesAsistencia() {
                 </div>
             </td>
             <td>
-                <select class="select-cozy-status" data-index="${index}">
-                    <option value="presente" ${estudiante.estado === 'presente' ? 'selected' : ''}>✨ Presente</option>
-                    <option value="ausente" ${estudiante.estado === 'ausente' ? 'selected' : ''}>❌ Ausente</option>
-                    <option value="tarde" ${estudiante.estado === 'tarde' ? 'selected' : ''}>⏳ Tarde</option>
+                <select
+                    class="select-cozy-status status-${estudiante.estado}"
+                    data-index="${index}">
+                    <option value="presente" ${estudiante.estado === 'presente' ? 'selected' : ''}>Presente</option>
+                    <option value="ausente" ${estudiante.estado === 'ausente' ? 'selected' : ''}>Ausente</option>
+                    <option value="tarde" ${estudiante.estado === 'tarde' ? 'selected' : ''}>Tarde</option>
                 </select>
             </td>
             <td>
@@ -363,6 +374,17 @@ if (DOM.listaEstudiantesAsistencia) {
         if (e.target.classList.contains("select-cozy-status")) {
             const index = e.target.getAttribute("data-index");
             const nuevoEstado = e.target.value;
+
+                e.target.classList.remove(
+                    "status-presente",
+                    "status-ausente",
+                    "status-tarde"
+                );
+
+                e.target.classList.add(
+                    `status-${nuevoEstado}`
+                );
+
             if (appState.aulaActiva && appState.aulaActiva.estudiantes[index]) {
                 appState.aulaActiva.estudiantes[index].estado = nuevoEstado;
             }
@@ -396,11 +418,25 @@ if (DOM.btnGuardarAsistencia) {
         if (!appState.aulaActiva) return;
         try {
             await actualizarEstudiantesFirestore(appState.aulaActiva.id, appState.aulaActiva.estudiantes);
-            alert("¡Asistencia guardada con éxito en Firestore! 📋✨");
+            alert("¡Asistencia guardada con éxito en Firestore!");
         } catch (error) {
             alert("Error al salvar el pase de lista.");
         }
     });
+}
+
+// Boton de pdf
+if(DOM.btnGenerarPdf){
+
+    DOM.btnGenerarPdf.addEventListener(
+        "click",
+        () => {
+
+            window.print();
+
+        }
+    );
+
 }
 
 // ==========================================================================
@@ -409,12 +445,48 @@ if (DOM.btnGuardarAsistencia) {
 function calcularEstadisticasGenerales(listaAulas) {
     if (!DOM.statsContainer) return;
 
-    let totalAulas = listaAulas.length;
-    let totalEstudiantes = 0;
-    
-    listaAulas.forEach(aula => {
-        totalEstudiantes += aula.estudiantes ? aula.estudiantes.length : 0;
-    });
+        let totalAulas = listaAulas.length;
+
+        let totalEstudiantes = 0;
+
+        let presentes = 0;
+
+        let ausentes = 0;
+
+        let tardes = 0;
+
+        listaAulas.forEach(aula => {
+
+            (aula.estudiantes || [])
+            .forEach(estudiante => {
+
+                totalEstudiantes++;
+
+                if(estudiante.estado === "presente")
+                    presentes++;
+
+                else if(estudiante.estado === "ausente")
+                    ausentes++;
+
+                else if(estudiante.estado === "tarde")
+                    tardes++;
+
+            });
+
+        });
+
+        const totalEstados =
+        presentes + ausentes + tardes;
+
+        const porcentajeAsistencia =
+        totalEstados > 0
+
+        ? Math.round(
+            (presentes / totalEstados)
+            * 100
+        )
+
+        : 0;
 
     DOM.statsContainer.innerHTML = `
         <div class="stat-card">
@@ -434,10 +506,19 @@ function calcularEstadisticasGenerales(listaAulas) {
         <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
             <div class="stat-info">
-                <h3>100%</h3>
-                <p>Sincronizado con Firestore</p>
+                <h3>${porcentajeAsistencia}%</h3>
+                <p>Asistencia General</p>
             </div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <h3>${tardes}</h3>
+            <p>Tardanzas</p>
+        </div>
+</div>
     `;
 }
 

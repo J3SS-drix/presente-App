@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presente App</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+
+    <div class="login-container" id="login">
+
+        <h1 class="logo-title">  Presente! </h1>
+        <p class="subtitle"> No dejés de estarlo. </p>
+        <input type="text" placeholder="Usuario">
+
+        <input type="password" placeholder="Contraseña">
+
+        <button onclick="entrar()">
+            Iniciar Sesión
+        </button>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard" id="dashboard">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <h2>Asistencia</h2>
+
+            <ul>
+                <li class="active" onclick="mostrarSeccion('inicio')"> <i class="fa-solid fa-house"> </i> Inicio
+                </li>
+
+                <li onclick="mostrarSeccion('asistencia')"> <i class="fa-solid fa-clipboard-check"> </i> Pase de Lista
+                </li>
+
+                <li onclick="mostrarSeccion('aulas')"> <i class="fa-solid fa-school"> </i> Aulas 
+                </li>
+
+                <li onclick="mostrarSeccion('reportes')"> <i class="fa-solid fa-file-pdf"> </i> Reportes
+                </li>
+
+                <li onclick="mostrarSeccion('config')"> <i class="fa-solid fa-gear"> </i> Configuración
+                </li>
+            </ul>
+
+        </aside>
+
+
+
+        <!-- MAIN -->
+
+        <main class="main-content">
+
+            <!-- INICIO -->
+
+<section id="inicio">
+
+    <header>
+        <h2>Panel Principal</h2>
+    </header>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Estudiantes</h3>
+             <p id="totalStudents">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Presentes</h3>
+            <p id="totalPresent">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Ausentes</h3>
+            <p id="totalAbsent">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Tarde</h3>
+            <p id="totalLate">0</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- AULAS -->
+
+<section id="aulas" class="hidden">
+
+    <header>
+        <h2>Mis Aulas</h2>
+    </header>
+
+    <div class="attendance">
+
+        <div class="create-class">
+
+            <input
+            type="text"
+            id="className"
+            placeholder="Nombre del aula">
+
+            <button onclick="crearAula()">
+                Crear Aula
+            </button>
+
+        </div>
+
+
+
+        <div id="classContainer" class="class-grid">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ASISTENCIA -->
+
+<section id="asistencia" class="hidden">
+
+    <div class="attendance">
+
+        <h2>Pase de Lista</h2>
+
+        <div class="attendance-info">
+
+            <h3 id="attendanceClass">
+                📚 Aula:
+            </h3>
+
+            <p id="attendanceSubject">
+                📖 Materia:
+            </p>
+
+        </div>
+
+        <div id="attendanceStudents">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- AULA ABIERTA -->
+
+<section id="classView" class="hidden">
+
+    <header>
+
+        <h2 id="classTitle">
+            Aula
+        </h2>
+
+    </header>
+
+
+
+    <div class="attendance">
+
+        <h3>
+            Estudiantes
+        </h3>
+
+        <br>
+
+
+
+        <button
+            class="add-student-btn"
+            onclick="agregarEstudiante()">
+            <i class="fa-solid fa-user-plus"></i>
+
+            Agregar estudiante
+
+        </button>
+
+
+
+        <div id="studentList">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- REPORTES -->
+
+<section
+id="reportes"
+class="hidden">
+
+    <h2>
+        Reportes
+    </h2>
+
+    <div class="report-box">
+
+        <p>
+            📚 Total aulas:
+            <span id="reportAulas">
+                0
+            </span>
+        </p>
+
+        <p>
+            👨‍🎓 Total estudiantes:
+            <span id="reportStudents">
+                0
+            </span>
+        </p>
+
+        <p>
+            ✅ Presentes:
+            <span id="reportPresent">
+                0
+            </span>
+        </p>
+
+        <p>
+            ❌ Ausentes:
+            <span id="reportAbsent">
+                0
+            </span>
+        </p>
+
+        <p>
+            ⏰ Tarde:
+            <span id="reportLate">
+                0
+            </span>
+        </p>
+
+        <p>
+            📈 Asistencia General:
+            <span id="attendancePercent">
+                0%
+            </span>
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- CONFIG -->
+
+<section id="config" class="hidden">
+
+    <div class="attendance">
+
+        <h2>Configuración</h2>
+
+        <p>Opciones del sistema próximamente. Stay Tuned...</p>
+
+    </div>
+
+</section>
+
+
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>

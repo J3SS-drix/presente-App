@@ -1,295 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presente App</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+    <title>Presente! - Control de Asistencia</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
 <body>
+    <div id="app">
+        <section id="login-section" class="auth-container">
+            <div class="auth-card">
+                <div class="logo">
+                    <i class="fas fa-calendar-check"></i>
+                    <h1>Presente!</h1>
+                </div>
+                <p class="subtitle">Sistema de Control de Asistencia</p>
+                
+                <form id="form-login" class="form-container">
+                    <div class="input-group">
+                        <label for="login-email">Correo Electrónico</label>
+                        <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Ingresar</button>
+                </form>
+            </div>
+        </section>
 
-    <!-- LOGIN -->
+        <section id="dashboard-section" class="main-container hidden">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Presente!</span>
+                </div>
+                <nav class="sidebar-menu">
+                    <button class="menu-item active" data-section="inicio">
+                        <i class="fas fa-home"></i> Inicio
+                    </button>
+                    <button class="menu-item" data-section="aulas">
+                        <i class="fas fa-chalkboard-teacher"></i> Aulas
+                    </button>
+                    <button class="menu-item" data-section="reportes">
+                        <i class="fas fa-chart-bar"></i> Reportes
+                    </button>
+                    <button id="btn-logout" class="menu-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </button>
+                </nav>
+            </aside>
 
-    <div class="login-container" id="login">
+            <main class="content">
+                <div id="sub-inicio" class="sub-section">
+                    <div class="welcome-box">
+                        <h2>¡Hola de nuevo! 👋</h2>
+                        <p>Este es el resumen general de la asistencia escolar para el día de hoy.</p>
+                    </div>
+                    <div class="stats-grid" id="stats-container">
+                        </div>
+                </div>
 
-        <h1 class="logo-title">  Presente! </h1>
-        <p class="subtitle"> No dejés de estarlo. </p>
-        <input type="text" placeholder="Usuario">
+                <div id="sub-aulas" class="sub-section hidden">
+                    <div class="section-header">
+                        <h2>Mis Aulas</h2>
+                        <button id="btn-abrir-modal-aula" class="btn-primary">
+                            <i class="fas fa-plus"></i> Crear Aula
+                        </button>
+                    </div>
+                    
+                    <div id="grid-aulas" class="grid-layout">
+                        </div>
+                </div>
 
-        <input type="password" placeholder="Contraseña">
+                <div id="sub-pase-lista" class="sub-section hidden">
+                    <div class="section-header">
+                        <div class="title-with-back">
+                            <button id="btn-volver-aulas" class="btn-icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h2 id="txt-asistencia-aula">Nombre del Aula</h2>
+                                <p id="txt-asistencia-materia" class="subtitle">Asignatura</p>
+                            </div>
+                        </div>
+                        <button id="btn-abrir-modal-estudiante" class="btn-primary">
+                            <i class="fas fa-user-plus"></i> Agregar Estudiante
+                        </button>
+                    </div>
 
-        <button onclick="entrar()">
-            Iniciar Sesión
-        </button>
+                    <div class="tabla-container">
+                        <table class="cozy-table">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Asistencia</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-estudiantes-asistencia">
+                                </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="action-footer">
+                        <button id="btn-guardar-asistencia" class="btn-success">
+                            <i class="fas fa-save"></i> Guardar Pase de Lista
+                        </button>
+                    </div>
+                </div>
 
+                <div id="sub-reportes" class="sub-section hidden">
+                    <div class="section-header">
+                        <h2>Reportes Estadísticos</h2>
+                    </div>
+                    <div class="report-card">
+                        <p>Selecciona un aula en la sección correspondiente para visualizar e imprimir sus reportes de asistencia detallados.</p>
+                    </div>
+                </div>
+            </main>
+        </section>
     </div>
 
-
-    <!-- DASHBOARD -->
-
-    <div class="dashboard" id="dashboard">
-
-        <!-- SIDEBAR -->
-
-        <aside class="sidebar">
-
-            <h2>Asistencia</h2>
-
-            <ul>
-                <li class="active" onclick="mostrarSeccion('inicio')"> <i class="fa-solid fa-house"> </i> Inicio
-                </li>
-
-                <li onclick="mostrarSeccion('asistencia')"> <i class="fa-solid fa-clipboard-check"> </i> Pase de Lista
-                </li>
-
-                <li onclick="mostrarSeccion('aulas')"> <i class="fa-solid fa-school"> </i> Aulas 
-                </li>
-
-                <li onclick="mostrarSeccion('reportes')"> <i class="fa-solid fa-file-pdf"> </i> Reportes
-                </li>
-
-                <li onclick="mostrarSeccion('config')"> <i class="fa-solid fa-gear"> </i> Configuración
-                </li>
-            </ul>
-
-        </aside>
-
-
-
-        <!-- MAIN -->
-
-        <main class="main-content">
-
-            <!-- INICIO -->
-
-<section id="inicio">
-
-    <header>
-        <h2>Panel Principal</h2>
-    </header>
-
-    <div class="cards">
-
-        <div class="card">
-            <h3>Estudiantes</h3>
-             <p id="totalStudents">0</p>
+    <div id="modal-aula" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-aula-titulo">Nueva Aula</h3>
+                <button class="btn-close-modal" data-modal="modal-aula">&times;</button>
+            </div>
+            <form id="form-aula" class="form-container">
+                <input type="hidden" id="aula-id-hidden">
+                
+                <div class="input-group">
+                    <label for="aula-nombre">Nombre del Aula / Grupo</label>
+                    <input type="text" id="aula-nombre" placeholder="Ej. 3T1-CO" required>
+                </div>
+                <div class="input-group">
+                    <label for="aula-materia">Asignatura / Materia</label>
+                    <input type="text" id="aula-materia" placeholder="Ej. Diseño de Sistemas" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary btn-close-modal" data-modal="modal-aula">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Aula</button>
+                </div>
+            </form>
         </div>
-
-        <div class="card">
-            <h3>Presentes</h3>
-            <p id="totalPresent">0</p>
-        </div>
-
-        <div class="card">
-            <h3>Ausentes</h3>
-            <p id="totalAbsent">0</p>
-        </div>
-
-        <div class="card">
-            <h3>Tarde</h3>
-            <p id="totalLate">0</p>
-        </div>
-
     </div>
 
-</section>
-
-
-<!-- AULAS -->
-
-<section id="aulas" class="hidden">
-
-    <header>
-        <h2>Mis Aulas</h2>
-    </header>
-
-    <div class="attendance">
-
-        <div class="create-class">
-
-            <input
-            type="text"
-            id="className"
-            placeholder="Nombre del aula">
-
-            <button onclick="crearAula()">
-                Crear Aula
-            </button>
-
+    <div id="modal-estudiante" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Registrar Estudiante</h3>
+                <button class="btn-close-modal" data-modal="modal-estudiante">&times;</button>
+            </div>
+            <form id="form-estudiante" class="form-container">
+                <div class="input-group">
+                    <label for="estudiante-nombre">Nombre Completo</label>
+                    <input type="text" id="estudiante-nombre" placeholder="Ej. Juan Pérez López" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary btn-close-modal" data-modal="modal-estudiante">Cancelar</button>
+                    <button type="submit" class="btn-primary">Registrar</button>
+                </div>
+            </form>
         </div>
-
-
-
-        <div id="classContainer" class="class-grid">
-
-        </div>
-
     </div>
 
-</section>
-
-<!-- ASISTENCIA -->
-
-<section id="asistencia" class="hidden">
-
-    <div class="attendance">
-
-        <h2>Pase de Lista</h2>
-
-        <div class="attendance-info">
-
-            <h3 id="attendanceClass">
-                📚 Aula:
-            </h3>
-
-            <p id="attendanceSubject">
-                📖 Materia:
-            </p>
-
-        </div>
-
-        <div id="attendanceStudents">
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- AULA ABIERTA -->
-
-<section id="classView" class="hidden">
-
-    <header>
-
-        <h2 id="classTitle">
-            Aula
-        </h2>
-
-    </header>
-
-
-
-    <div class="attendance">
-
-        <h3>
-            Estudiantes
-        </h3>
-
-        <br>
-
-
-
-        <button
-            class="add-student-btn"
-            onclick="agregarEstudiante()">
-            <i class="fa-solid fa-user-plus"></i>
-
-            Agregar estudiante
-
-        </button>
-
-
-
-        <div id="studentList">
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- REPORTES -->
-
-<section
-id="reportes"
-class="hidden">
-
-    <h2>
-        Reportes
-    </h2>
-
-    <div class="report-box">
-
-        <p>
-            📚 Total aulas:
-            <span id="reportAulas">
-                0
-            </span>
-        </p>
-
-        <p>
-            👨‍🎓 Total estudiantes:
-            <span id="reportStudents">
-                0
-            </span>
-        </p>
-
-        <p>
-            ✅ Presentes:
-            <span id="reportPresent">
-                0
-            </span>
-        </p>
-
-        <p>
-            ❌ Ausentes:
-            <span id="reportAbsent">
-                0
-            </span>
-        </p>
-
-        <p>
-            ⏰ Tarde:
-            <span id="reportLate">
-                0
-            </span>
-        </p>
-
-        <p>
-            📈 Asistencia General:
-            <span id="attendancePercent">
-                0%
-            </span>
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- CONFIG -->
-
-<section id="config" class="hidden">
-
-    <div class="attendance">
-
-        <h2>Configuración</h2>
-
-        <p>Opciones del sistema próximamente. Stay Tuned...</p>
-
-    </div>
-
-</section>
-
-
-
-    <script type="module" src="script.js"></script>
-
+    <script type="module" src="js/script.js"></script>
 </body>
-
 </html>

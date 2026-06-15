@@ -56,7 +56,10 @@
             <main class="content">
                 <div id="sub-inicio" class="sub-section">
                     <div class="welcome-box">
-                        <h2>¡Hola de nuevo! 👋</h2>
+                        <h2>
+                            <i class="fas fa-hand-sparkles"></i>
+                            ¡Hola de nuevo!
+                        </h2>
                         <p>Este es el resumen general de la asistencia escolar para el día de hoy.</p>
                     </div>
                     <div class="stats-grid" id="stats-container">
@@ -91,6 +94,22 @@
                         </button>
                     </div>
 
+                    <div class="print-header">
+
+                        <h1 id="print-class-name">
+                            Aula
+                        </h1>
+
+                        <p id="print-subject-name">
+                            Materia
+                        </p>
+
+                        <p class="print-date" id="print-date">
+                            Fecha
+                        </p>
+
+                    </div>
+
                     <div class="tabla-container">
                         <table class="cozy-table">
                             <thead>
@@ -106,9 +125,17 @@
                     </div>
                     
                     <div class="action-footer">
-                        <button id="btn-guardar-asistencia" class="btn-success">
-                            <i class="fas fa-save"></i> Guardar Pase de Lista
+
+                        <button id="btn-generar-pdf" class="btn-secondary">
+                            <i class="fas fa-file-pdf"></i>
+                            Generar PDF
                         </button>
+
+                        <button id="btn-guardar-asistencia" class="btn-success">
+                            <i class="fas fa-save"></i>
+                            Guardar Pase de Lista
+                        </button>
+
                     </div>
                 </div>
 

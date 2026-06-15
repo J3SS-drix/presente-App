@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presente! - Control de Asistencia</title>
+    <link rel="icon" type="image/png" href="img/favicon1.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <section id="login-section" class="auth-container">
+            <div class="auth-card">
+                <div class="logo">
+                    <i class="fas fa-calendar-check"></i>
+                    <h1>Presente!</h1>
+                </div>
+                <p class="subtitle">Sistema de Control de Asistencia</p>
+                
+                <form id="form-login" class="form-container">
+                    <div class="input-group">
+                        <label for="login-email">Correo Electrónico</label>
+                        <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Ingresar</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="dashboard-section" class="main-container hidden">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Presente!</span>
+                </div>
+                <nav class="sidebar-menu">
+                    <button class="menu-item active" data-section="inicio">
+                        <i class="fas fa-home"></i> Inicio
+                    </button>
+                    <button class="menu-item" data-section="aulas">
+                        <i class="fas fa-chalkboard-teacher"></i> Aulas
+                    </button>
+                    <button class="menu-item" data-section="reportes">
+                        <i class="fas fa-chart-bar"></i> Reportes
+                    </button>
+                    <button id="btn-logout" class="menu-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </button>
+                </nav>
+            </aside>
+
+            <main class="content">
+                <div id="sub-inicio" class="sub-section">
+                    <div class="welcome-box">
+                        <h2>
+                            <i class="fas fa-hand-sparkles"></i>
+                            ¡Hola de nuevo!
+                        </h2>
+                        <p>Este es el resumen general de la asistencia escolar para el día de hoy.</p>
+                    </div>
+                    <div class="stats-grid" id="stats-container">
+                        </div>
+                </div>
+
+                <div id="sub-aulas" class="sub-section hidden">
+                    <div class="section-header">
+                        <h2>Mis Aulas</h2>
+                        <button id="btn-abrir-modal-aula" class="btn-primary">
+                            <i class="fas fa-plus"></i> Crear Aula
+                        </button>
+                    </div>
+                    
+                    <div id="grid-aulas" class="grid-layout">
+                        </div>
+                </div>
+
+                <div id="sub-pase-lista" class="sub-section hidden">
+                    <div class="section-header">
+                        <div class="title-with-back">
+                            <button id="btn-volver-aulas" class="btn-icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <h2 id="txt-asistencia-aula">Nombre del Aula</h2>
+                                <p id="txt-asistencia-materia" class="subtitle">Asignatura</p>
+                            </div>
+                        </div>
+                        <button id="btn-abrir-modal-estudiante" class="btn-primary">
+                            <i class="fas fa-user-plus"></i> Agregar Estudiante
+                        </button>
+                    </div>
+
+                    <div class="print-header">
+
+                        <h1 id="print-class-name">
+                            Aula
+                        </h1>
+
+                        <p id="print-subject-name">
+                            Materia
+                        </p>
+
+                        <p class="print-date" id="print-date">
+                            Fecha
+                        </p>
+
+                    </div>
+
+                    <div class="tabla-container">
+                        <table class="cozy-table">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Asistencia</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-estudiantes-asistencia">
+                                </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="action-footer">
+
+                        <button id="btn-generar-pdf" class="btn-secondary">
+                            <i class="fas fa-file-pdf"></i>
+                            Generar PDF
+                        </button>
+
+                        <button id="btn-guardar-asistencia" class="btn-success">
+                            <i class="fas fa-save"></i>
+                            Guardar Pase de Lista
+                        </button>
+
+                    </div>
+                </div>
+
+                <div id="sub-reportes"class="sub-section hidden">
+                    <div class="section-header">
+                        <h2>Reportes</h2>
+                    </div>
+
+                    <div class="report-card">
+
+                        <label>
+                            Seleccionar Aula
+                        </label>
+
+                        <select id="selector-reporte">
+                            <option value="">
+                                Seleccione un aula
+                            </option>
+                        </select>
+
+                        <div id="info-reporte"></div>
+
+                        <button
+                            id="btn-pdf-reporte"
+                            class="btn-primary">
+
+                            <i class="fas fa-file-pdf"></i>
+                            Generar PDF
+
+                        </button>
+
+                    </div>
+                </div>
+
+            </main>
+        </section>
+    </div>
+
+    <div id="modal-aula" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-aula-titulo">Nueva Aula</h3>
+                <button class="btn-close-modal" data-modal="modal-aula">&times;</button>
+            </div>
+            <form id="form-aula" class="form-container">
+                <input type="hidden" id="aula-id-hidden">
+                
+                <div class="input-group">
+                    <label for="aula-nombre">Nombre del Aula / Grupo</label>
+                    <input type="text" id="aula-nombre" placeholder="Ej. 3T1-CO" required>
+                </div>
+                <div class="input-group">
+                    <label for="aula-materia">Asignatura / Materia</label>
+                    <input type="text" id="aula-materia" placeholder="Ej. Diseño de Sistemas" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary btn-close-modal" data-modal="modal-aula">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Aula</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-estudiante" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Registrar Estudiante</h3>
+                <button class="btn-close-modal" data-modal="modal-estudiante">&times;</button>
+            </div>
+            <form id="form-estudiante" class="form-container">
+                <div class="input-group">
+                    <label for="estudiante-nombre">Nombre Completo</label>
+                    <input type="text" id="estudiante-nombre" placeholder="Ej. Juan Pérez López" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary btn-close-modal" data-modal="modal-estudiante">Cancelar</button>
+                    <button type="submit" class="btn-primary">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>

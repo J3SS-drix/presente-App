@@ -1,0 +1,797 @@
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN GENERAL (Estilo Cozy)
+   ========================================================================== */
+:root {
+    --primary-color: #764ba2;
+    --primary-light: #667eea;
+    --bg-cozy: #fdfbf7; /* Un blanco hueso cálido y cómodo para la vista */
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --white: #ffffff;
+    --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 10px 25px rgba(118, 75, 162, 0.15);
+    --transition: all 0.3s ease;
+    
+    /* Colores de Asistencia */
+    --color-presente: #48bb78;
+    --color-ausente: #f56565;
+    --color-tarde: #ed8936;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-cozy);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* CLASE CRÍTICA: Sistema de navegación y modales */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   2. SECCIÓN DE LOGIN (AUTH)
+   ========================================================================== */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+/* Formularios */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: #f8fafc;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    background-color: var(--white);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Botones */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    color: var(--white);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(118, 75, 162, 0.25);
+}
+
+.btn-secondary {
+    background-color: #edf2f7;
+    color: var(--text-main);
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: var(--white);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+}
+
+#btn-generar-pdf {
+    background: linear-gradient(
+        135deg,
+        #e53e3e 0%,
+        #c53030 100%
+    );
+
+    color: white;
+
+    box-shadow:
+    0 10px 25px rgba(
+        229,
+        62,
+        62,
+        0.20
+    );
+}
+
+#btn-generar-pdf:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   3. PANEL PRINCIPAL (DASHBOARD & SIDEBAR ARCHITECTURE)
+   ========================================================================== */
+.main-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: var(--white);
+    border-right: 1px solid #edf2f7;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+}
+
+.sidebar-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    padding-left: 10px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 18px;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.menu-item i {
+    font-size: 1.2rem;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(118, 75, 162, 0.08);
+    color: var(--primary-color);
+}
+
+.menu-item.logout {
+    margin-top: auto; /* Empuja el botón hacia abajo */
+    color: #e53e3e;
+}
+
+.menu-item.logout:hover {
+    background-color: rgba(229, 62, 62, 0.08);
+}
+
+/* Contenido Principal */
+.content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.welcome-box {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 30px;
+    border-left: 5px solid var(--primary-color);
+}
+
+/* ==========================================================================
+   4. TARJETAS KPI (ESTADÍSTICAS DE INICIO)
+   ========================================================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: rgba(118, 75, 162, 0.1);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+}
+
+.stat-info h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.stat-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   5. GRID DE AULAS Y DISEÑO DE TARJETAS
+   ========================================================================== */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card-aula {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    border: 1px solid #edf2f7;
+}
+
+.card-aula:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.card-body {
+    padding: 24px;
+    flex: 1;
+}
+
+.card-body h3 {
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.materia-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.badge-students {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: #f7fafc;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.card-actions {
+    background-color: #f8fafc;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #edf2f7;
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.btn-abrir-aula {
+    color: var(--primary-color);
+}
+.btn-abrir-aula:hover { color: var(--primary-light); }
+
+.btn-editar-aula {
+    color: var(--text-muted);
+}
+.btn-editar-aula:hover { color: var(--text-main); }
+
+.btn-eliminar-aula {
+    color: #e53e3e;
+}
+.btn-eliminar-aula:hover { color: #c53030; }
+
+/* ==========================================================================
+   6. TABLA COZY (PASE DE LISTA)
+   ========================================================================== */
+.title-with-back {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-icon {
+    background: var(--white);
+    border: 1px solid #e2e8f0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+.btn-icon:hover {
+    background-color: #edf2f7;
+}
+
+.tabla-container {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.cozy-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.cozy-table th {
+    background-color: #f8fafc;
+    padding: 16px 24px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid #edf2f7;
+}
+
+.cozy-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: middle;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-avatar {
+    font-size: 1.5rem;
+    color: #cbd5e0;
+}
+
+/* Selector Cozy de Asistencia */
+.select-cozy-status {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e0;
+    background-color: var(--white);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition);
+}
+
+.select-cozy-status:focus {
+    border-color: var(--primary-light);
+}
+
+/* ========================================================================== 
+   ESTADOS VISUALES DE ASISTENCIA
+   ========================================================================== */
+
+.select-cozy-status.status-presente {
+    background-color: #e6fffa;
+    color: #234e52;
+    border-color: #319795;
+}
+
+.select-cozy-status.status-ausente {
+    background-color: #fff5f5;
+    color: #742a2a;
+    border-color: #e53e3e;
+}
+
+.select-cozy-status.status-tarde {
+    background-color: #fffaf0;
+    color: #7b341e;
+    border-color: #dd6b20;
+}
+
+.btn-delete-student {
+    background: none;
+    border: none;
+    color: #e53e3e;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.btn-delete-student:hover {
+    background-color: rgba(229, 62, 62, 0.05);
+}
+
+.action-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   7. MODALES (VENTANAS EMERGENTES)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(45, 55, 72, 0.4);
+    backdrop-filter: blur(4px); /* Difumina el fondo sutilmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: scaleUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-close-modal:hover {
+    color: var(--text-main);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+/* Estado Vacío Estético */
+.no-data-cozy {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.no-data-cozy i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #cbd5e0;
+}
+
+.text-center-cozy {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+/* ========================================================================== 
+   ENCABEZADO PDF
+   ========================================================================== */
+
+.print-header {
+    display: none;
+}
+
+/* ==========================================================================
+   8. ANIMACIONES
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   9. RESPONSIVIDAD (MOBILE FRIENDLY)
+   ========================================================================== */
+
+/* ========================================================================== 
+   IMPRESIÓN PDF
+   ========================================================================== */
+
+@media print {
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .sidebar,
+    .section-header,
+    .action-footer,
+    .welcome-box,
+    .stats-grid,
+    .btn-delete-student,
+    th:nth-child(3),
+    td:nth-child(3) {
+
+        display: none !important;
+    }
+
+    .main-container {
+        display: block !important;
+    }
+
+    .content {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .print-header {
+
+        display: block !important;
+
+        margin-bottom: 20px;
+
+        border-bottom: 2px solid black;
+
+        padding-bottom: 10px;
+    }
+
+    .print-header h1 {
+
+        font-size: 22pt;
+
+        margin: 0;
+    }
+
+    .print-header p {
+
+        margin-top: 5px;
+    }
+
+    .tabla-container {
+
+        box-shadow: none !important;
+
+        border: none !important;
+    }
+
+    .cozy-table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+    }
+
+    .cozy-table th,
+    .cozy-table td {
+
+        border: 1px solid #ccc;
+
+        padding: 10px;
+    }
+
+    .select-cozy-status {
+
+        border: none !important;
+
+        background: transparent !important;
+
+        appearance: none;
+
+        color: black !important;
+
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #edf2f7;
+        padding: 20px;
+    }
+    
+    .sidebar-header {
+        margin-bottom: 20px;
+    }
+    
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+    
+    .menu-item {
+        padding: 10px 15px;
+        white-space: nowrap;
+    }
+    
+    .menu-item.logout {
+        margin-top: 0;
+        margin-left: auto;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .btn-primary {
+        width: 100%;
+    }
+}
